@@ -13,6 +13,14 @@ Noteable changes from the below boards are:
 * Voltage supervisor circuit via [TPS3808](http://www.ti.com/lit/ds/symlink/tps3808.pdf) for controlled ESP startup
 * New layout with surface mount components and reduced size
 
+Building notes:
+* JP2 must be closed to enable recovery from deep sleep mode.  This is required.
+* The EPS Prog/Reset circuitry is optional as the board can be programmed via the PROG and RST buttons.
+* MRST button is optional, it forces a clean delay of the ESP reset.
+* C7 is shown as a capacitor, but the latest version is a resistor value instead.  Next version will move to a resistor symbol.
+* C6 can be omitted if desired.
+* R1, R2 and R6 build custom hystersis for the TPS3808 based on [this](http://www.ti.com/lit/an/slva360/slva360.pdf) application note.
+
 A (mostly) assembled prototype board is shown here:
 ![Board Front](/Images/POE_G1_assembled_front.jpg)
 ![Board_Back](/Images/POE_G1_assembled_back.jpg)
