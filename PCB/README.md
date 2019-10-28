@@ -3,7 +3,21 @@
 
 Here are links to the different board designs together with a short summary.
 
-## HAN_ESP_TSS721 (The current design)
+## HAN_SELF_POWERED (Self contained and HAN Powered)
+
+This [board](HAN_SELF_POWERED) contains a built in power supply to run without any external connection.  It is an evolution of the design proposed by ArnieO on the home automation forum [thread](https://www.hjemmeautomasjon.no/forums/topic/4933-lesing-av-amshan-uten-spenningsforsyning-the-complicated-way/).
+
+Noteable changes from the below boards are:
+* Uses [LTC3642](https://www.analog.com/media/en/technical-documentation/data-sheets/3642fc.pdf) for power delivery from the HAN signals
+* Current limiter for preventing inrush tripping of overcurrent on HAN reader
+* Voltage supervisor circuit via [TPS3808](http://www.ti.com/lit/ds/symlink/tps3808.pdf) for controlled ESP startup
+* New layout with surface mount components and reduced size
+
+A (mostly) assembled prototype board is shown here:
+![Board Front](/Images/POE_G1_assembled_front.jpg)
+![Board_Back](/Images/POE_G1_assembled_back.jpg)
+
+## HAN_ESP_TSS721 (USB Powered)
 
 This is the current and most robust design for the [main board](HAN_ESP_TSS721). There's been great help in creating this, both here on GitHub, but also at the Norwegian home automation forum, [www.hjemmeautomasjon.no](https://www.hjemmeautomasjon.no/forums/topic/1982-lesing-av-ams-data-amshan-iot/)
 
