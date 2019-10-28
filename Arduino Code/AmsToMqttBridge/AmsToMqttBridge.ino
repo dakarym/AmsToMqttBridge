@@ -4,9 +4,11 @@
  Author:	roarf
 */
 
+ADC_MODE(ADC_VCC);    //Set the ADC to read VCC rather than external voltage, used for supply voltage monitoring
 
 #define HAS_DALLAS_TEMP_SENSOR 1		// Set to zero if Dallas one wire temp sensor is not present
-#define IS_CUSTOM_AMS_BOARD 1			// Set to zero if using NodeMCU or board not designed by Roar Fredriksen
+#define IS_CUSTOM_AMS_BOARD 0			// Set to zero if using NodeMCU or board not designed by Roar Fredriksen
+#define IS_POE_AMS_BOARD 1        // Set to 1 for board with integrated power supply
 
 #include <ArduinoJson.h>
 #include <MQTT.h>
@@ -32,6 +34,10 @@
 #define LED_PIN 2 // The blue on-board LED of the ESP8266 custom AMS board
 #define LED_ACTIVE_HIGH 0
 #define AP_BUTTON_PIN 0
+#elif IS_POE_AMS_BOARD
+#define LED_PIN 2 // The blue on-board LED of the ESP8266 custom AMS board
+#define LED_ACTIVE_HIGH 0
+#define AP_BUTTON_PIN INVALID_BUTTON_PIN    //Set AP button as invalid to omit 5 second AP delay to limit power consumption
 #else
 #define LED_PIN LED_BUILTIN
 #define LED_ACTIVE_HIGH 1
@@ -71,13 +77,23 @@ void setup()
 		while (!debugger);
 		debugger->println("");
 		debugger->println("Started...");
+    debugger->print(ESP.getVcc());
 	}
 
-	// Flash the LED, to indicate we can boot as AP now
+  // Check Vcc to sense if voltage is high enough to boot without restart --> Vcc value may need to be tuned?
+  if (ESP.getVcc() < 3450) {
+    if (debugger) debugger->println("Voltage is too low");
+    if (debugger) debugger->println(ESP.getVcc());
+    ESP.deepSleep(5000000);    //Deep sleep for 5 seconds to allow output cap to charge up
+  }  
+
+	// Flash the LED, to indicate we can boot as AP now (skip if AP button is invalid)
+  if (AP_BUTTON_PIN != INVALID_BUTTON_PIN) {
 	pinMode(LED_PIN, OUTPUT);
 	led_on();
 
 	delay(1000);
+  }
 
 	// Initialize the AP
 	ap.setup(AP_BUTTON_PIN, debugger);
@@ -157,6 +173,7 @@ void setupWiFi()
 
 	// Connect to WiFi
 	WiFi.mode(WIFI_STA);
+  WiFi.setOutputPower(0);
 	WiFi.begin(ap.config.ssid, ap.config.ssidPassword);
 
 	// Wait for WiFi connection
@@ -197,7 +214,7 @@ void mqttMessageReceived(String &topic, String &payload)
 
 void readHanPort()
 {
-	if (hanReader.read())
+	if (hanReader.read() && ESP.getVcc() > 2800)    // Check that Vcc is okay before reading --> test is this is needed?  probably delete?
 	{
 		// Flash LED on, this shows us that data is received
 		led_on();
@@ -214,6 +231,7 @@ void readHanPort()
 		json["id"] = WiFi.macAddress();
 		json["up"] = millis();
 		json["t"] = time;
+    json["vcc"] = ESP.getVcc();
 
 		// Add a sub-structure to the json object,
 		// to keep the data from the meter itself
