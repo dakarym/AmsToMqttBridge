@@ -5,7 +5,7 @@
 
  *Building this project will require some skills in ordering and assembling  electronic circuits as well as programming, and I have not included detailed instructions to take a beginner through the steps. I still hope some still find information here useful, maybe also for other projects.*
 
-## Updated self powered HAN reader -- Work in progress
+## Self powered HAN reader -- Work in progress
 
 This is an update for a new self powered HAN [PCB](/PCB/KiCAD/HAN_SELF_POWERED) as originally conceived by ArnieO on the home automation [thread](https://www.hjemmeautomasjon.no/forums/topic/4933-lesing-av-amshan-uten-spenningsforsyning-the-complicated-way/).  Details on the hardware change is on the PCB [README](/PCB/README.md).  This version does not need a USB power connection.  Instead energy is taken from the HAN port connection and stored for use on the board.  A DC-DC buck converter based on the LTC3642 provides 3.3V at ~35ma from the 24V supply.  
 
