@@ -5,7 +5,39 @@
 
  *Building this project will require some skills in ordering and assembling  electronic circuits as well as programming, and I have not included detailed instructions to take a beginner through the steps. I still hope some still find information here useful, maybe also for other projects.*
 
-## The completed hardware
+## Updated self powered HAN reader -- Work in progress
+
+This is an update for a new self powered HAN [PCB](/PCB/KiCAD/HAN_SELF_POWERED) as originally conceived by ArnieO on the home automation [thread](https://www.hjemmeautomasjon.no/forums/topic/4933-lesing-av-amshan-uten-spenningsforsyning-the-complicated-way/).  Details on the hardware change is on the PCB [README](/PCB/README.md).  This version does not need a USB power connection.  Instead energy is taken from the HAN port connection and stored for use on the board.  A DC-DC buck converter based on the LTC3642 provides 3.3V at ~35ma from the 24V supply.  
+
+The design has been tested and running successfully on an Aidon meter for the last 3 months.  Currently testing is pending on Kamstrup and Kafia style meters.
+
+#### Open items / Limitations:
+* The current that the buck can provide is limited to the maximum power supported by the meter HAN port.  The maximum value varies based on the meter type.  More information can be found [here](/Debugging/Documentation).  Currently the Aidon has the highest power available, but also has the fastest list frequency of 2.5 seconds.  Kamstrup and Kafia are at 10 second lists which may be beneficial as more time can be spent in low power idling.
+* The most critical time for energy starvation is during the inital startup.  If the wifi or MQTT connection takes too long, the device will drop below the 2.65V cutoff for the voltage supervisor and will restart.  
+* Due to this, the following edits in the [sketch](/Arduino Code/AmsToMqttBridge/AmsToMqttBridge.ino) were made:
+  * Elimination of the 5 second waiting for AP time
+  * Checking of the Vcc level at bootup and deepsleeping if insufficient voltage
+  * Checking of the Vcc before entering the read message loop
+* Fine tuning of the peak current trip threshold on the buck converter to balance average power draw with minimizing peak currents.
+* Fine tuning of input current surge limiters for different meter types.  To be tested/verified soon.
+  * Currently the design uses an NSI45020 as a 20 ma current clamp.  Below is a screenshot of the input surge with discharged input capacitors.  Yellow is the input current with 0.1V per ma scaling.  Cyan is input voltage.  Note the peak current clamped at ~27ma.
+![NSI45020_Inrush](/Images/Inrush_current_voltage_NSI45020.png)
+  * Alternatively an NPN current clamp could be used.  Such an example is shown below with the same measurements and scaling as above.  Note the peak current clamped at ~8.5ma.
+  ![NPN_Inrush](/Images/Inrush_current_voltage_NPNclamp.png)
+* OTA updates will likely not be possible with this design, but will need testing
+* Inital configuration of Wifi credentials and meter type will need to be done when connected to an external 3.3V supply.
+* The auto reset funtionality was implemented based on the circuit and testing of Kevin Darrah and explained [here](https://youtu.be/HdHzxM6fEig).  This funtionality has not been tested on the board.  Manually entering bootloader mode via the PROG and RST buttons is working.
+
+#### Next Steps:
+* Test and verify on other meter types
+* Respin PCB design to correct changes as needed
+* Reduce cost of BOM and limited value components
+* Share project on PCBWay
+* Design optional case for 3d printing
+
+
+
+## The previous hardware
 ![The HAN Reader Hardware](./Images/HanReaderInEnclosure.PNG)
 
 *The completed board mounted in a [3D printed enclosure](/Electrical/HAN_ESP_TSS721/enclosure)*
