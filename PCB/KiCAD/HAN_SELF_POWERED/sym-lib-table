@@ -1,0 +1,6 @@
+(sym_lib_table
+  (lib (name HAN_ESP_TSS721-rescue)(type Legacy)(uri ${KIPRJMOD}/HAN_ESP_TSS721-rescue.lib)(options "")(descr ""))
+  (lib (name LTC3642IMS8EPBF)(type Legacy)(uri /home/osboxes/Downloads/LTC3642IMS8EPBF/LTC3642IMS8EPBF.lib)(options "")(descr ""))
+  (lib (name MIC2778)(type Legacy)(uri /home/osboxes/Downloads/MIC27781YM5/KiCAD/2019-07-31_11-37-23/2019-07-31_11-37-23.lib)(options "")(descr ""))
+  (lib (name 2019-08-06_13-43-54)(type Legacy)(uri /home/osboxes/Downloads/KiCAD/2019-08-06_13-43-54/2019-08-06_13-43-54.lib)(options "")(descr ""))
+)

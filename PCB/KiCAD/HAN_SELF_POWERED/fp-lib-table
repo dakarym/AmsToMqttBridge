@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name footprints)(type KiCad)(uri /home/osboxes/Downloads/KiCAD/2019-08-06_13-43-54/footprints.pretty)(options "")(descr ""))
+  (lib (name DGH105Q5R5)(type KiCad)(uri ${KIPRJMOD}/DGH105Q5R5.pretty)(options "")(descr ""))
+)
