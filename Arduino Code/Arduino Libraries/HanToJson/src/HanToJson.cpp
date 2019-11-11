@@ -201,9 +201,11 @@ static void hanToJsonKamstrup(JsonObject& data, HanReader& hanReader, Stream *de
 
     switch (listSize) {
         case (int)Kamstrup::List3PhaseShort:
+			return hanToJsonKamstrup3phase(listSize, data, hanReader, debugger);
         case (int)Kamstrup::List3PhaseLong:
             return hanToJsonKamstrup3phase(listSize, data, hanReader, debugger);
         case (int)Kamstrup::List1PhaseShort:
+		    return hanToJsonKamstrup1phase(listSize, data, hanReader, debugger);
         case (int)Kamstrup::List1PhaseLong:
             return hanToJsonKamstrup1phase(listSize, data, hanReader, debugger);
 		default:
