@@ -26,7 +26,7 @@ The design has been tested and running successfully on an Aidon meter for the la
   ![NPN_Inrush](/Images/Inrush_current_voltage_NPNclamp.png)
 * OTA updates will likely not be possible with this design, but will need testing
 * Inital configuration of Wifi credentials and meter type will need to be done when connected to an external 3.3V supply.
-* The auto reset funtionality was implemented based on the circuit and testing of Kevin Darrah and explained [here](https://youtu.be/HdHzxM6fEig).  This funtionality has not been tested on the board.  Manually entering bootloader mode via the PROG and RST buttons is working.
+* The auto reset funtionality  is implemented based on the circuit and testing of Kevin Darrah and explained [here](https://youtu.be/HdHzxM6fEig).  It is tested working on a couple of my boards with good results.
 
 #### Next Steps:
 * Test and verify on other meter types
